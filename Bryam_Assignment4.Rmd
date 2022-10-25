@@ -1,0 +1,92 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+#install packages
+```{r}
+#Question 2
+install.packages ("tidyverse", dependencies = TRUE)
+install.packages ("ggthemes", dependencies =TRUE)
+```
+#load packages
+```{r}
+#Question 2
+library(tidyverse)
+library (ggthemes)
+```
+#import data
+```{r}
+#Question 3
+assignment4 = read.csv("a4_data.csv")
+
+#Question 4
+nrow(assignment4) 
+ncol(assignment4) 
+
+#It has 3,700 rows and 12 columns.
+```
+# tidyverse verbs
+```{r}
+assignment4 %>% 
+  pull(subject)%>% unique()
+
+assignment4 %>%
+  group_by(trial)%>% count ()
+#There are 37 participants and 100 trials
+```
+```{r}
+assignment4%>%pull(prime_condition)
+levels(assignment4%>%pull(prime_condition))
+```
+
+```{r}
+prime_information = assignment4 %>%select(subject,prime_condition)
+#Question 7
+
+phonological = assignment4%>%select(prime_condition,accuracy)%>%
+  filter(prime_condition == "phonological" & accuracy == "1")
+#Question 8
+```
+
+```{r}
+subject_acc = assignment4%>%
+  group_by(subject)%>%
+  summarize(mean_acc = mean(accuracy))
+#Question 9
+```
+
+```{r}
+prime_acc = assignment4%>%
+  group_by(prime_condition)%>%
+  summarize(mean_acc = mean(accuracy), sd_acc = sd(accuracy))
+#Question 10
+```
+
+```{r}
+subject_acc%>%
+  ggplot(aes(x = mean_acc))+
+  geom_histogram(binwidth = 0.2, 
+fill = "green", color = "black", 
+position = "identity")+
+xlab("mean accuracy") + 
+ylab ("Count")+
+ggtitle("Histogram of Mean Accuracy")
+
+#Question 11
+  
+```
+
+```{r}
+prime_acc%>%
+  ggplot(aes(x = prime_condition, y = mean_acc))+
+  geom_bar(stat = "identity", fill="yellow", color = "black")+
+  labs(x="Prime Condition",y="Mean Accuracy",title="Mean Accuracy Across Prime Condition")
+#Question 12
+
+#Question 13
+
+#Prime condition does not have an effect on accuracy as there's a small difference in mean accuracy across the 4 conditions.
+```
+
+
+
